@@ -11,10 +11,10 @@ __pycache__/
 
 
 # Node / Nuxt
-exam-archive-front/node_modules/
-exam-archive-front/node_modules/.output/
-exam-archive-front/node_modules/.nuxt/
-exam-archive-front/node_modules/.env
+./exam-archive-front/node_modules/
+./exam-archive-front/.output/
+./exam-archive-front/.nuxt/
+./exam-archive-front/.env
 
 # General
 .env
