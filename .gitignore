@@ -2,3 +2,20 @@ backend/__pychache__/
 backend/core/__pycache__/
 *.pyc
 *sqlite3
+
+# Python / Pipenv
+backend/.venv/
+*.pyc
+__pycache__/
+*.sqlite3
+
+
+# Node / Nuxt
+exam-archive-front/node_modules/
+exam-archive-front/node_modules/.output/
+exam-archive-front/node_modules/.nuxt/
+exam-archive-front/node_modules/.env
+
+# General
+.env
+.DS_Store
