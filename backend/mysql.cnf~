@@ -1,0 +1,6 @@
+[client]
+database = exam_archive
+user = prasim
+password='projCredd3f47t'
+port=3306
+default-character-set = UTF-8
