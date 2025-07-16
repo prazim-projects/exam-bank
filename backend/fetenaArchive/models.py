@@ -50,3 +50,14 @@ class DifficultyRating(models.Model):
     def __str__(self):
         return f'{self.get_difficulty_score_display()}'
     
+
+class PeerReview(models.Model):
+
+    reviewerID = models.ForeignKey(User, on_delete=models.CASCADE)
+    examID = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    review_text = models.CharField(max_length=120)
+    reviewed_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.reviewerID}'
+    
