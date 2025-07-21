@@ -1,22 +1,38 @@
-<script setup lang='js'>
-
-var count = ref(4)
-function increment() {
-	 count.value++; 
-}
+<script setup lang='ts'>
 
 </script>
 
 <template>
-  <div>
+  <UApp> 
+    <navbar />
+    <NuxtPage />
     <NuxtRouteAnnouncer />
-    <h1>Hello Exam Archive</h1>
-    <p>blaatfool</p>
-    <form>
-	<label> name </label>	<input>
-    </form>
-    <button @click="increment"> click me</button>
-    <h4> {{count}}</h4>
-
-    </div>
+  </UApp>
 </template>
+
+<style lang="css">
+
+nav{
+  
+  width: 100%;
+  background-color: rgb(11, 85, 80);
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+
+}
+nav > ul > li {
+  width: 70px;
+  margin: 20px;
+  height: 20px;
+  
+}
+
+.router-link-exact-active{
+  text-size-adjust: 70px;
+}
+
+
+</style>

@@ -1,5 +1,24 @@
+import { defineNuxtConfig } from "nuxt/config"
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+
 export default defineNuxtConfig({
-  compatibilityDate: '2025-05-15',
-  devtools: { enabled: true }
+  // compatibilityDate: '2025-05-15',
+  devtools: { enabled: true },
+  modules: ['@nuxtjs/apollo', '@nuxt/ui', '@pinia/nuxt'],
+  css: ['~/assets/css/main.css'],
+  ui: {
+    prefix: 'Nuxt',
+    fonts: false,
+    colorMode: true,
+    theme: {
+      colors: ['primary', 'secondary', 'success', 'info', 'warning', 'error']
+    }
+  },
+  apollo: {
+    clients: {      
+      default: {       
+        httpEndpoint: 'http://localhost:8000/graphql'  }    
+    },  
+  },
 })

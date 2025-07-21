@@ -2,7 +2,6 @@
 /backend/core/__pycache__/
 *.pyc
 *sqlite3
-
 # Python / Pipenv
 backend/core/.env
 *.pyc
@@ -11,11 +10,13 @@ __pycache__/
 
 
 # Node / Nuxt
-/exam-archive-front/.nuxt/
 ./exam-archive-front/.env
 /exam-archive-front/node_modules
 # General
 .env
 .DS_Store
 backend/mysql.cnf
-backend/fetenaArchive/migrations/
+backend/fetenaArchive/migrations
+exam-archive-front/.nuxt/
+backend/media/ETDU/
+

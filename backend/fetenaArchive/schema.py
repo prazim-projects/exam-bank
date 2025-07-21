@@ -1,22 +1,9 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from .models import *
 
-class ExamType(DjangoObjectType):
-    class Meta:
-        model = Exam
-        fields = '__all__'
-
-class DifficultyRatingType(DjangoObjectType):
-    class Meta:
-        model = DifficultyRating
-        fields = "__all__"
-
-class PeerReviewType(DjangoObjectType):
-    class Meta:
-        model = PeerReview
-        fields = '__all__'
+from file_api.models import *
+from .types import *
 
 
 class Query(graphene.ObjectType):
@@ -29,6 +16,9 @@ class Query(graphene.ObjectType):
     difficulty_rating_by_exam = graphene.List(DifficultyRatingType, exam_id=graphene.Int(required=True))
 
     peer_review_by_id = graphene.List(PeerReviewType, exam_id=graphene.Int(required=True))
+
+    user_by_id = graphene.Field(UserType, id=graphene.String())
+    files = graphene.List(ExamFileType)
 
     def resolve_all_exams(root, info):
         return Exam.objects.only("title", "course", "year", "id", "department", "upload_date").all()
@@ -52,7 +42,6 @@ class Query(graphene.ObjectType):
             return Exam.objects.filter(title=title)
         except Exam.DoesNotExist:
             return None
-   
 
     def resolve_difficulty_rating_by_exam(root, info, exam_id):
         try:
@@ -66,5 +55,12 @@ class Query(graphene.ObjectType):
             return PeerReview.objects.filter(examID=exam_id)
         except PeerReview.DoesNotExist:
             return None
+
+    def resolve_user_by_id(root, info, id):
+        return User.objects.get(pk=id)
+
+    def resolve_files(root, info):
+        return ExamFile.objects.select_related('exam').all()
+
 schema = graphene.Schema(query=Query)
 

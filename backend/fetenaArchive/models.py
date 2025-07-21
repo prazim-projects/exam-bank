@@ -5,16 +5,16 @@ import uuid
 
 class User(AbstractUser):
     role_choice = (
+        ('student', 'Student'),
         ('lecturer', 'Lecturer'),
         ('staff', 'Staff')
     )
     organization_email = models.EmailField("Organization Email", max_length=254, default='test@etdu.et')
-    name = models.CharField(max_length=50)
     role = models.CharField(max_length=10, choices=role_choice)
     staffID = models.CharField("given by organization", max_length=50, default='ETDU/20067/test') 
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Exam(models.Model):

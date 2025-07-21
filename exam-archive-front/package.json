@@ -10,8 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/ui": "^3.2.0",
     "nuxt": "^3.17.6",
+    "pinia": "^3.0.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/apollo": "^5.0.0-alpha.14"
   }
 }
