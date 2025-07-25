@@ -3,11 +3,13 @@
 </script>
 
 <template>
-  <UApp> 
+  
     <navbar />
+    <main class="pt-16">
     <NuxtPage />
+    </main>
     <NuxtRouteAnnouncer />
-  </UApp>
+    
 </template>
 
 <style lang="css">

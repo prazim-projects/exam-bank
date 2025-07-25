@@ -1,7 +1,9 @@
 import graphene
+import graphql_jwt
+
+
 from graphene_django import DjangoObjectType
-
-
+from .mutations import *
 from file_api.models import *
 from .types import *
 
@@ -35,7 +37,7 @@ class Query(graphene.ObjectType):
     def resolve_exam_by_course(root, info, course):
         
         print("QUERY RECIEVED: ", course)
-        return Exam.objects.filter(course_iexact=course)
+        return Exam.objects.filter(course=course)
         
     def resolve_exam_by_title(root, info, title):
         try:
@@ -62,5 +64,15 @@ class Query(graphene.ObjectType):
     def resolve_files(root, info):
         return ExamFile.objects.select_related('exam').all()
 
-schema = graphene.Schema(query=Query)
+
+class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+    upload_file = UploadExamMutation.Field()
+    create_user = createUser.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
 

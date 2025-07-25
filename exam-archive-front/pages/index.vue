@@ -8,7 +8,7 @@ function increment() {
 </script>
 
 <template> 
-    <div class=""> 
+    <div class="container"> 
         <h1> home </h1>
         <h1>Selam Exam Archive</h1>
     <p></p>

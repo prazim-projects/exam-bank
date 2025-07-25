@@ -75,7 +75,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 GRAPHENE = {
-    "SCHEMA": 'fetenaArchive.schema.schema'
+    "SCHEMA": 'fetenaArchive.schema.schema',
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ]
 }
 
 TEMPLATES = [
@@ -103,7 +106,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': '/home/prasim/Documents/proj/exam-archive/exam-bank/backend/mysql.cnf',
+            'read_default_file': f'{env('cnfpath')}/mysql.cnf',
         },
     }
 }
@@ -127,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+X_FRAME_OPTIONS = 'ALLOWALL'
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

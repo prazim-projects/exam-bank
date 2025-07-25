@@ -20,3 +20,5 @@ backend/fetenaArchive/migrations
 exam-archive-front/.nuxt/
 backend/media/ETDU/
 
+backend/fetenaArchive/fixtures/exams.json
+exam-archive-front/package-lock.json

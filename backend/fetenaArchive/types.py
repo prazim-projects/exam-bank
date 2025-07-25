@@ -1,9 +1,10 @@
+# from graphene import relay, ObjectType
 import graphene
 from graphene_django import DjangoObjectType
+# from graphene_django.filter import DjangoFilterConnectionField
+
 from .models import *
 from file_api.models import *
-
-
 
 class DifficultyRatingType(DjangoObjectType):
     class Meta:
@@ -18,7 +19,7 @@ class PeerReviewType(DjangoObjectType):
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        fields = ('id', 'name', 'password', 'role', 'username', 'staffID')
+        fields = ('id', 'role', 'username', 'staffID', 'email')
 
 class ExamFileType(DjangoObjectType):
     class Meta:
