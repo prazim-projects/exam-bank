@@ -1,7 +1,7 @@
 import graphene
 from graphene_file_upload.scalars import Upload
 from file_api.utils import exam_file_path
-from .types import UserType
+from .types import *
 from . import models
 
 class UploadExamMutation(graphene.Mutation):
@@ -21,10 +21,16 @@ class createExamMutation(graphene.Mutation):
         course = graphene.String(required=True)
         uploadedBy = graphene.String(required=True)
         visibility = graphene.String(required=False)
+        file = Upload(required=True)
+    
+    exam = graphene.Field(ExamType)
+    exam_file = graphene.Field(ExamFileType)
     
     @classmethod
-    def mutate(cls, root, info,title, year, course, uploadedBy, visibility ):
-        exam = models.Exam(title=title, year=year, uploadedBy=uploadedBy, visibility=visibiltiy)
+    def mutate(cls, root, info,title, year, course, uploadedBy, visibility, file ):
+        with transaction.atomic():
+            exam = models.Exam(title=title, year=year, uploadedBy=uploadedBy, visibility=visibiltiy)
+            exam_file = ExamFile.objects.create(file=file, exam=exam)
         return exam
 
 class createUser(graphene.Mutation):

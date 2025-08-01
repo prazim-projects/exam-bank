@@ -1,48 +1,50 @@
-<script setup lang="ts">
+<template>
+  <form @submit.prevent="submitForm">
 
-const form = reactive({
-  file: null,
-  StaffID: '',
-  course: '',
+    <input v-model="title" type="text" placeholder="Exam Title" required />
+    <input type="file" @change="handleFileChange" required />
+    <button type="submit">Upload</button>
+  </form>
+</template>
 
-})
+<script setup>
+import { useMutation } from '@vue/apollo-composable'
+import gql from 'graphql-tag'
+import { ref } from 'vue'
 
-const showStudentFields = computed(() => form.role === 'student')
-const showInstructorFields = computed(() => form.role === 'instructor')
+const title = ref('')
+const file = ref(null)
 
-function handleFileUpload(e) {
-  form.file = e.target.files[0]
-}
-
-function submitForm() {
-  console.log({ ...form })}
-
-
-
-  const mutation = gql`
-  mutation uploadExam($file: file!){
-    uploadExam (file: $file) {
-      success
+const CREATE_EXAM_WITH_FILE = gql`
+  mutation CreateExamWithFile($examTitle: String!, $file: Upload!) {
+    createExamWithFile(examTitle: $examTitle, file: $file) {
+      exam {
+        id
+        title
+      }
+      examFile {
+        id
+        fileName
+      }
     }
   }
 `
 
+const { mutate } = useMutation(CREATE_EXAM_WITH_FILE)
 
+function handleFileChange(event) {
+  file.value = event.target.files[0]
+}
+
+async function submitForm() {
+  try {
+    const { data } = await mutate({
+      examTitle: title.value,
+      file: file.value,
+    })
+    console.log('Success:', data)
+  } catch (error) {
+    console.error('Upload failed:', error)
+  }
+}
 </script>
-
-<template>
-  
-  <form @submit.prevent="submitForm" class="p-4 space-y-4 max-w-md mx-auto border rounded bg-amber-100">
-    
-       
-    <input type="file" @change="handleFileUpload" class="w-full" />
-
-    
-    <div class="space-y-2">
-      <input v-model="form.course" type="text" placeholder="Course" class="w-full p-2 border rounded" />
-      <input v-model="form.StaffID" type="text" placeholder="StaffID" class="w-full p-2 border rounded" />
-    </div>
-
-    <button type="submit" class="w-full bg-black text-white py-2 rounded">Submit</button>
-  </form>
-</template>

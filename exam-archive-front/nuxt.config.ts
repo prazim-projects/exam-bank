@@ -26,5 +26,8 @@ export default defineNuxtConfig({
         httpEndpoint: 'http://localhost:8000/graphql'  }    
     },  
   },
+  pinia: {
+    storesDirs: [ '/stores/**'],
+  },
   debug: false,
 })

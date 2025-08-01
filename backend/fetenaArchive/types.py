@@ -32,6 +32,3 @@ class ExamType(DjangoObjectType):
         fields = '__all__'
 
         file = graphene.List(ExamFileType)
-
-    def resolve_files(self, info):
-        return self.files.all()
