@@ -1,11 +1,12 @@
 <script setup lang='ts'>
+import navbar from './components/common/navbar'
 
 </script>
 
 <template>
   
-    <navbar />
-    <main class="pt-16">
+    <div class="max-h-fit flex bg-blue-300 w-full h-15 text-2xl px-6 py-3"> <navbar /> </div>
+    <main class="pt-6 mx-20 flex text-2xl font-mono text-amber-700">
     <NuxtPage />
     </main>
     <NuxtRouteAnnouncer />
@@ -13,24 +14,6 @@
 </template>
 
 <style lang="css">
-
-nav{
-  
-  width: 100%;
-  background-color: rgb(11, 85, 80);
-}
-
-ul {
-  display: flex;
-  flex-direction: row;
-
-}
-nav > ul > li {
-  width: 70px;
-  margin: 20px;
-  height: 20px;
-  
-}
 
 .router-link-exact-active{
   text-size-adjust: 70px;

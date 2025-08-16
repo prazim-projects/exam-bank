@@ -3,6 +3,9 @@ from graphene_file_upload.scalars import Upload
 from file_api.utils import exam_file_path
 from .types import UserType
 from . import models
+from django.contrib.auth import get_user_model
+from graphql_jwt.shortcuts import create_refresh_token, get_token
+
 
 class UploadExamMutation(graphene.Mutation):
     class Arguments:
@@ -28,6 +31,10 @@ class createExamMutation(graphene.Mutation):
         return exam
 
 class createUser(graphene.Mutation):
+    user = graphene.Field(UserType)
+    token = graphene.String()
+    refresh_token = graphene.String()
+
     class Arguments:
         username = graphene.String(required=True)
         email = graphene.String(required=True)
@@ -36,15 +43,16 @@ class createUser(graphene.Mutation):
         studentID = graphene.String(required=False)
         staffID = graphene.String(required=False)
     
-    user = graphene.Field(UserType)
-
     @classmethod
     def mutate(cls, root, info, username, email, password, role, staffID=None, studentID=None):
-        user = models.User(username=username, email=email, role=role)
+        user = get_user_model()(
+            username=username,
+            password=password,
+        )
         role = role.lower()
 
-        if role not in ['staff', 'student']:
-            raise Exception("Invalid role. Must be 'staff' or 'student'.")
+        if role not in ['staff', 'student', 'department']:
+            raise Exception("Invalid role. Must be 'staff' or 'student' or 'department'.")
 
         user = models.User(username=username, email=email, role=role)
 
@@ -52,6 +60,7 @@ class createUser(graphene.Mutation):
             if not staffID:
                 raise Exception("staffID is required for staff role.")
             user.staffID = staffID
+            user.isStaff = True
 
         elif role == 'student':
             if not studentID:
@@ -60,6 +69,9 @@ class createUser(graphene.Mutation):
 
         user.set_password(password)
         user.save()
+        token = get_token(user)
+        refresh_token = create_refresh_token(user)
 
-        return createUser(user=user)
+
+        return createUser(user=user, token=token, refresh_token=refresh_token)
         

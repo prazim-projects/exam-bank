@@ -1,0 +1,51 @@
+query GetExam {
+  allExams {
+    course
+    department
+    id
+    title
+    uploadDate
+    year
+  }
+}
+
+
+query GetFullExamInfo {
+  allExams {
+    course
+    department
+    id
+    title
+    uploadDate
+    year
+    difficultyratingSet {
+      difficultyScore
+      id
+    }
+    uploadedBy {
+      username
+      role
+    }
+  }
+}
+
+
+query GetExamByCourse {
+  examByCourse(course: "") {
+    course
+    department
+    id
+    peerreviewSet {
+      reviewText
+      reviewerID {
+        username
+        role
+      }
+      reviewedAt
+      id
+    }
+    title
+    uploadDate
+    year
+  }
+}

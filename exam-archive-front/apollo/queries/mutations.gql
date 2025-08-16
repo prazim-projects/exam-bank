@@ -1,0 +1,20 @@
+mutation CreateUserMutation {
+  createUser(email: "", password: "", role: "", username: "") {
+    user {
+      id
+      role
+      staffID
+      username
+    }
+  }
+}
+
+
+
+mutation GetAuth {
+  tokenAuth(password: "", username: "") {
+    payload
+    refreshExpiresIn
+    token
+  }
+}

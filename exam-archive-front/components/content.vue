@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 
 const query = gql`
-    query getExams{
-      allExams{
+    query getExamPublic($visibility: String!, $limit: Int!, $offset: Int!){
+      examByVisibility(visibility: $visibility, limit: $limit, offset: $offset){
           course
           department
           title
@@ -26,20 +26,22 @@ const query = gql`
     }
   }`
 
-const { data, loading, error } = await useAsyncQuery(query)
+const variables = {visibility: 'published', offset: 0, limit: 3}
 
+
+const { data, loading, error } = await useAsyncQuery(query, variables)
 
 </script>
 
 <template>
-    <div class='container bg-amber-100 mx-auto grid-col-3'>
+    <div class='container bg-vlue-100 mx-auto grid-col-3 text-xl text-black'>
       
       <h1>View Exams, Rate em, Get solutions!!</h1>
        
       <div v-if="loading">Loading...</div>
       <div v-else-if="error">Error: {{ error.message }}</div>
-      <div v-else class='bg-blend-color-burn'>
-       <ul v-for="exam in data?.allExams" :key="exam.id">
+      <div v-else class='bg-blend-color-burn '>
+       <ul v-for="exam in data?.examByVisibility" :key="exam.id">
          <li>
            <span>{{ exam.title }}</span><br />
            <span>{{exam.year}}</span><br />
@@ -49,23 +51,17 @@ const { data, loading, error } = await useAsyncQuery(query)
            </div>
 
            <div v-for="attr in exam.examFile" :key="attr.id">
-             <embed :src="`http://localhost:8000/media/${attr.file}`">
+             <a :href="`http://localhost:8000/media/${attr.file}`" target="blank"> {{attr.file}}</a>
            </div>
           </li>
         </ul>
+        <div> <button @click="nextPage"> Next page</button></div>
       </div>
-    <div>
-    <examUpload />
-    </div>
   </div>
   </template>
   
 
 <style lang='css'>
 
-div > embed{
-  width: 200px;
-  height: 200px;
-}
 
 </style>

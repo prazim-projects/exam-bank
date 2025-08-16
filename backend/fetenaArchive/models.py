@@ -7,7 +7,7 @@ from file_api.models import *
 class User(AbstractUser):
     role_choice = (
         ('student', 'Student'),
-        ('lecturer', 'Lecturer'),
+        ('department', 'Department'),
         ('staff', 'Staff')
     )
     organization_email = models.EmailField("Organization Email", max_length=254, default='test@etdu.et')
@@ -43,6 +43,7 @@ class Exam(models.Model):
     def __str__(self):
         return f'{self.year} - {self.course} - {self.get_title_display()}' 
     
+
 class DifficultyRating(models.Model):
     stars = (
         ('1', 'VERY EASY'),

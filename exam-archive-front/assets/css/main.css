@@ -9,6 +9,6 @@
 }
 
 .dark {
-    --ui-bg: var(--ui-color-neutral-950);
+    --ui-bg: var(--ui-color-neutral-300);
     --ui-border: var(--ui-color-neutral-900);
 }

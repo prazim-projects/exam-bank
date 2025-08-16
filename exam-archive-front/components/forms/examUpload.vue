@@ -31,8 +31,8 @@ function submitForm() {
 </script>
 
 <template>
-  
-  <form @submit.prevent="submitForm" class="p-4 space-y-4 max-w-md mx-auto border rounded bg-amber-100">
+  <div>
+  <form @submit.prevent="submitForm" class="p-4 space-y-4 max-w-md mx-auto border rounded">
     
        
     <input type="file" @change="handleFileUpload" class="w-full" />
@@ -45,4 +45,5 @@ function submitForm() {
 
     <button type="submit" class="w-full bg-black text-white py-2 rounded">Submit</button>
   </form>
+</div>
 </template>
