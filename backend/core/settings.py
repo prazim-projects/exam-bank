@@ -124,7 +124,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': f'{env('cnfpath')}/mysql.cnf',
+            'read_default_file': f'{env('cnfpath')}',
         },
     }
 }

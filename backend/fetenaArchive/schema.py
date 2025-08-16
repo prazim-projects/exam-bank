@@ -107,7 +107,7 @@ class Mutation(graphene.ObjectType):
 
     upload_file = UploadExamMutation.Field()
     create_user = createUser.Field()
-
+    create_exam = createExamMutation.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
 
