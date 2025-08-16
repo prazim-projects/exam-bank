@@ -32,20 +32,5 @@ export default defineNuxtConfig({
       colors: ['primary', 'secondary', 'success', 'info', 'warning', 'error']
     }
   },
-
-  apollo: {
-    autoImports: true,
-    authType: 'Bearer',
-    authHeader: 'Authorization',
-    tokenStorage: 'cookie',
-    proxyCookies: true,
-    clients: {      
-      default: {       
-        httpEndpoint: 'http://localhost:8000/graphql'  }    
-    },  
-  },
-  pinia: {
-    storesDirs: [ '/stores/**'],
-  },
   debug: false,
 })
