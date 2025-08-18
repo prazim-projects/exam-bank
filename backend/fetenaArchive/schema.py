@@ -10,6 +10,7 @@ from .types import *
 
 
 class Query(graphene.ObjectType):
+    #from v1
     all_exams = graphene.List(ExamType, limit=graphene.Int(required=False), offset=graphene.Int(required=False))
     exam_by_year = graphene.Field(ExamType, year=graphene.Int(required=True))
     exam_by_title = graphene.List(ExamType, title=graphene.String(required=True))
@@ -24,12 +25,9 @@ class Query(graphene.ObjectType):
     user_by_id = graphene.Field(UserType, id=graphene.String())
     files = graphene.List(ExamFileType)
 
-    # exam = relay.ConnectionField(examConnection)
-    # all_exams = DjangoFilterConnectionField(examFilterNode)
- 
-    # def resolve_exam(root, info, **kwargs):
-    #     return Exam.objects.all()
-    
+    # v2
+
+    Department
     @login_required
     def resolve_all_exams(root, info, limit=None, offset=None):
         examQuery = Exam.objects.all()

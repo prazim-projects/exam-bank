@@ -1,35 +1,41 @@
 <script setup lang='ts'>
 
+
 const query = gql`
     query getExamPublic($visibility: String!, $limit: Int!, $offset: Int!){
       examByVisibility(visibility: $visibility, limit: $limit, offset: $offset){
-          course
-          department
-          title
-          year
-          uploadDate
-          examFile{
-            file
+          course {
+            ExamCourses {
+              code
+              description
+              id
+              name}
+            createdAt
+            description
             id
-          }
-          difficultyratingSet {
-            difficultyScore
-            id  
-            ratedAt
-            ratedBy {
-              role
-              staffID
-              username
-            }
-          }
+            name
+}
 
     }
   }`
 
-const variables = {visibility: 'published', offset: 0, limit: 3}
+const variables = {visibility: 'published', offset: 0, limit: 0}
 
 
-const { data, loading, error } = await useAsyncQuery(query, variables)
+// Define the expected structure for data
+interface Exam {
+  id: string
+  title?: string
+  year?: string
+  difficultyratingSet?: Array<{ id: string; difficultyScore: number }>
+  examFile?: Array<{ id: string; file: string }>
+}
+
+interface QueryResult {
+  examByVisibility: Exam[]
+}
+
+const { data, loading, error } = await useAsyncQuery<QueryResult>(query, variables)
 
 </script>
 
@@ -40,12 +46,12 @@ const { data, loading, error } = await useAsyncQuery(query, variables)
        
       <div v-if="loading">Loading...</div>
       <div v-else-if="error">Error: {{ error.message }}</div>
-      <div v-else class='bg-blend-color-burn '>
+      <div v-else  class='bg-blend-color-burn '>
        <ul v-for="exam in data?.examByVisibility" :key="exam.id">
          <li>
            <span>{{ exam.title }}</span><br />
            <span>{{exam.year}}</span><br />
-           <span>{{exam.course}}</span><br>
+          <!-- <span>{{exam.}}</span><br /> -->
            <div v-for="score in exam.difficultyratingSet" :key="score.id">
             <span> difficulty rated: {{score.difficultyScore}} </span>
            </div>
@@ -55,7 +61,7 @@ const { data, loading, error } = await useAsyncQuery(query, variables)
            </div>
           </li>
         </ul>
-        <div> <button @click="nextPage"> Next page</button></div>
+        <div> <> Next page</div>
       </div>
   </div>
   </template>

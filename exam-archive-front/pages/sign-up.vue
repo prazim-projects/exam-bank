@@ -56,7 +56,7 @@ const onSubmit = async () => {
       role: formData.value.role,
       studentID: formData.value.studentID,
     })
-    await getAuth({
+    await ({
       variables
     })
   } catch (err) {

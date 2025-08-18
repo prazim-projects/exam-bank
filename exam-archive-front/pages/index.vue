@@ -1,6 +1,5 @@
 <script setup lang='ts'>
 
-
 </script>
 
 <template> 
@@ -14,10 +13,8 @@
             <form >
 	            <label> name </label>	<input class="bg-gray-100">
             </form>
-            <button  class=' bg-purple-600 rounded-4xl p-3 m-5' @click="increment"> click me</button>
-            <h4> {{count}}</h4>
         </div >
-        <div class="p-2 flex flex-row"> <content />     <examUpload /></div>
+        <div class="p-2 flex flex-row"> <content /></div>
     </div>
    
 </template>
