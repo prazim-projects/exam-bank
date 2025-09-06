@@ -29,20 +29,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('secret')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
-ALLOWED_HOSTS = [
-    'localhost',
-    
-]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
-]
+CORS_ALLOWED_ORIGINS = env.list("CORS_ORIGIN_WHITELIST", default=[])
 
 # Application definition
 
@@ -55,10 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'graphene_django',
-    'fetenaArchive',
     'file_api',
+    'fetenaArchive',    
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
-
 
 ]
 
@@ -77,7 +71,7 @@ GRAPHQL_JWT = {
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    "JWT_EXPIRATION_DELTA": timedelta(minutes=10),
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=30),
     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
     "JWT_SECRET_KEY": SECRET_KEY,
     "JWT_ALGORITHM": "HS256",

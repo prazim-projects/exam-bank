@@ -2,13 +2,15 @@
 import { ref } from 'vue'
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
+import {useUserStore} from '../stores/user.store'
+import { ro } from '@nuxt/ui/runtime/locale/index.js'
 
 // Reactive state for login form
 const username = ref('')
 const password = ref('')
 const role = ref<String | null>(null)
-const authToken = ref<string | null>(null) // Store JWT token
-const token = useCookie('jwt')
+
+const userStore = useUserStore()
 const route = useRouter()
 
 // GraphQL login mutation
@@ -22,32 +24,35 @@ const TOKEN_AUTH_MUTATION = gql`
         id
         role
         username
+        studentID
+        email
       }
     }
   }
 `
 
-// Apollo mutation hook
 const { mutate: login, loading, error, onDone } = useMutation(TOKEN_AUTH_MUTATION)
 
 
 // When mutation finishes successfully
 onDone((result) => {
   if (result.data?.tokenAuth?.token) {
-    authToken.value = result.data.tokenAuth.token
-    token.value = authToken.value
-    // localStorage.setItem('jwt', authToken.value)
-    console.log('Login successful! Token saved.')
-    role.value = result.data.tokenAuth.user.role
-    console.log(`ROLE: ${role.value}`  )
-    if (role.value==='STAFF'){
+    userStore.setToken(result.data.tokenAuth.token,result.data.tokenAuth.refreshToken )
+    userStore.setUser(result.data.tokenAuth.user)
+
+    if (userStore.getUser?.role==='DEPARTMENT' ){
       route.push(`/department/`)
     }
-    else if(role.value==='student'){
+    else if(userStore.getUser?.role==='College'){
+      route.push('/univ/')
+    }
+    else if(userStore.getUser?.role==='STUDENT'){
       route.push(`/students/`)
+      
     }
   }
 })
+
 
 // Login function
 const loginAuth = async () => {
@@ -75,6 +80,6 @@ const loginAuth = async () => {
 
     <div v-if="loading">Logging in...</div>
     <div v-if="error">Error: {{ error.message }}</div>
-    <div v-if="authToken"><NuxtLink to=""> </NuxtLink></div>
+    <!-- <div v-if="authToken"><NuxtLink to=""> </NuxtLink></div> -->
   </div>
 </template>

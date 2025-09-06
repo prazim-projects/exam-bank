@@ -1,0 +1,22 @@
+mutation CreateExam(
+  $course: String!
+  $title: String!
+  $uploadedBy: String!
+  $year: Int!
+  $visibility: String!
+  $file: Upload!
+) {
+  createExam(
+    course: $course
+    title: $title
+    uploadedBy: $uploadedBy
+    year: $year
+    visibility: $visibility
+    file: $file
+  ) {
+    examFile {
+      id
+      file
+    }
+  }
+}

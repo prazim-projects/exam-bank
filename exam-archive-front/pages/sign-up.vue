@@ -1,23 +1,36 @@
 <script lang='ts' setup>
 
+const userStore = useUserStore()
+const routeTo = useRouter()
+
 const CREATE_USER_MUTATION_STAFF = gql`
-  mutation createUser($username: String!, $password: String!, $email: String!, $role: String!, $staffID: String! ){
-    createUser(username: $username, password: $password, email: $email, role: $role, staffID: $staffID,){
+  mutation createUser($username: String!, $password: String!, $email: String!, $role: String!, $studentID: String) {
+    createUser(username: $username, password: $password, email: $email, role: $role, studentID: $studentID) {
+      token
+      refreshToken
       user{
         id
         email
         role
         username
         role
-        staffID
+        studentID
       }    
 
     }
   }
 `
 
+type formType = {
+  username: string,
+  password: string,
+  email: string,
+  role: string,
+  studentID: string,
+  [key: string]: string
+}
 
-const formData = ref({
+const formData = ref<formType>({
   username: '',
   password: '',
   email: '',
@@ -25,11 +38,17 @@ const formData = ref({
   studentID: '',
 })
 
-const fields = ref([
+type fieldType = {
+  key: string,
+  label: string,
+  type: string
+}
+
+const fields = ref<fieldType[]>([
   { key: 'username', label: 'Username', type: 'text' },
   { key: 'password', label: 'Password', type: 'password' },
   { key: 'email', label: 'Email', type: 'email' },
-  { key: 'studentID', label: 'studendID', type: 'text' },
+  { key: 'studentID', label: 'studentID', type: 'text' },
 ])
 
  
@@ -37,9 +56,25 @@ const {mutate: createStaff, loading, onDone, error} = useMutation(CREATE_USER_MU
 
 
 onDone((result) => {
-  if (result.data?.tokenAuth?.user) {
-    
+  if (result.data?.createUser.token) {
+    console.log('User created successfully:', result.data.createUser.user)
+    const user = result.data.createUser
+    userStore.setUser(user.user)
+    userStore.setToken(user.token, user.refreshToken)
+     
+    if (userStore.getUser?.role==='DEPARTMENT' ){
+      routeTo.push(`/department/`)
+    }
+    else if(userStore.getUser?.role==='COLLEGE'){
+      routeTo.push('/univ/')
+    }
+    else if(userStore.getUser?.role==='STUDENT'){
+      routeTo.push(`/students/`)
+      
+    }
   }
+
+
 })
 
 
@@ -55,9 +90,6 @@ const onSubmit = async () => {
       email: formData.value.email,
       role: formData.value.role,
       studentID: formData.value.studentID,
-    })
-    await getAuth({
-      variables
     })
   } catch (err) {
     console.error(err)

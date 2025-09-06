@@ -1,35 +1,80 @@
 <script setup lang='ts'>
+// import { useAsyncQuery } from '@vue/apollo-composable'
+const userStore  = useUserStore()
+
+type Exam = {
+  id: number
+  title: string
+  year: number
+  difficultyratingSet: {difficultyScore: number, id:number}[]
+  examFile: {file: string, id:number}[]
+}
+
+type ExamByVisibilityResult = {
+  examByVisibility: Exam[]
+}
+
+type AllExamsResult = {
+  allExams: Exam[]
+}
 
 const query = gql`
     query getExamPublic($visibility: String!, $limit: Int!, $offset: Int!){
       examByVisibility(visibility: $visibility, limit: $limit, offset: $offset){
-          course
-          department
-          title
-          year
-          uploadDate
-          examFile{
-            file
-            id
-          }
-          difficultyratingSet {
-            difficultyScore
-            id  
-            ratedAt
-            ratedBy {
-              role
-              staffID
-              username
-            }
-          }
+        title
+        id
+        uploadDate
+        year
+        difficultyratingSet{
+          difficultyScore
+          id
+        }
+        examFile {
+          file
+          id
+        }
+      }
+}`
 
+const query_2 = gql `
+  query getAllExams{
+    allExams{
+      id
+      title
+      year
+      difficultyratingSet{
+        difficultyScore
+        id
+      }
+      examFile{
+        file
+        id
+      }
     }
-  }`
+  }
+`
 
-const variables = {visibility: 'published', offset: 0, limit: 3}
+const variables = { visibility: 'PUBLISHED', offset: 0, limit: 10}
+const variables_1 = {offset: 0, limit: 4}
+import { onMounted, watch } from 'vue'
+import ExamCard from './exams/examCard.vue'
 
 
-const { data, loading, error } = await useAsyncQuery(query, variables)
+const { data, error } = await useAsyncQuery<ExamByVisibilityResult>(query, variables)
+// const { data, error } = await useAsyncQuery<AllExamsResult>(query_2, variables_1)
+
+// const { data, error } = await useAsyncQuery<AllExamsResult>(query_2, variables_1)
+
+onMounted(() => {
+  watch(
+    () => data.value,
+    (newData) => {
+      console.log('Query response:', newData)
+    },
+    { immediate: true }
+  )
+})
+
 
 </script>
 
@@ -37,27 +82,14 @@ const { data, loading, error } = await useAsyncQuery(query, variables)
     <div class='container bg-vlue-100 mx-auto grid-col-3 text-xl text-black'>
       
       <h1>View Exams, Rate em, Get solutions!!</h1>
-       
-      <div v-if="loading">Loading...</div>
-      <div v-else-if="error">Error: {{ error.message }}</div>
+      <div v-if="error">Error: {{ error.message }}</div>
       <div v-else class='bg-blend-color-burn '>
-       <ul v-for="exam in data?.examByVisibility" :key="exam.id">
-         <li>
-           <span>{{ exam.title }}</span><br />
-           <span>{{exam.year}}</span><br />
-           <span>{{exam.course}}</span><br>
-           <div v-for="score in exam.difficultyratingSet" :key="score.id">
-            <span> difficulty rated: {{score.difficultyScore}} </span>
-           </div>
-
-           <div v-for="attr in exam.examFile" :key="attr.id">
-             <a :href="`http://localhost:8000/media/${attr.file}`" target="blank"> {{attr.file}}</a>
-           </div>
-          </li>
-        </ul>
-        <div> <button @click="nextPage"> Next page</button></div>
+          <ExamCard 
+            v-for="exam in data?.examByVisibility" 
+            :key="exam.id" 
+            :exam="exam" />
+        </div>
       </div>
-  </div>
   </template>
   
 
