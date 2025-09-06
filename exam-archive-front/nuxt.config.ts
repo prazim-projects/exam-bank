@@ -1,11 +1,10 @@
 import { defineNuxtConfig } from "nuxt/config"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/apollo', '@nuxt/ui', '@pinia/nuxt'],
+  modules: ['@nuxtjs/apollo', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
   apollo: {
     autoImports: true,
     authType: 'Bearer',
@@ -14,9 +13,8 @@ export default defineNuxtConfig({
     proxyCookies: true,
     clients: {
       default: {
-        httpEndpoint: 'http://localhost:8000/graphql'
-      },
-      other: 'apollo/other.ts'
+        httpEndpoint: 'http://localhost:8000/graphql',
+      }
     }
   },
 
