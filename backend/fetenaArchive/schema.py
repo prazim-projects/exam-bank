@@ -5,7 +5,6 @@ from graphql_jwt.decorators import login_required
 from graphene_django import DjangoObjectType
 
 from .mutations import *
-from file_api.models import *
 from .types import *
 
 
@@ -25,9 +24,15 @@ class Query(graphene.ObjectType):
     user_by_id = graphene.Field(UserType, id=graphene.String())
     files = graphene.List(ExamFileType)
 
+
     # v2
 
-    Department
+    Department = graphene.List(DepartmentType)
+    College = graphene.List(CollegeType)
+    Exam_courses = graphene.List(Exam_courseType)
+    Site = graphene.List(SiteType)
+
+
     @login_required
     def resolve_all_exams(root, info, limit=None, offset=None):
         examQuery = Exam.objects.all()
@@ -48,6 +53,7 @@ class Query(graphene.ObjectType):
             return Exam.objects.get(year=year)
         except Exam.DoesNotExist:
             return None
+        
     @login_required
     def resolve_exam_by_course(root, info, course):
         
@@ -83,14 +89,16 @@ class Query(graphene.ObjectType):
         except PeerReview.DoesNotExist:
             return None
 
-    @login_required
+
     def resolve_user_by_id(root, info, id):
         return User.objects.get(pk=id)
 
     def resolve_files(root, info):
         return ExamFile.objects.select_related('exam').all()
 
-
+    def resolve_Exam_courses(root, info):
+        return Exam_courses.objects.all()
+    
 class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
     user = graphene.Field(UserType)
 
@@ -103,7 +111,6 @@ class Mutation(graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
-    upload_file = UploadExamMutation.Field()
     create_user = createUser.Field()
     create_exam = createExamMutation.Field()
 

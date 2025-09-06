@@ -1,16 +1,42 @@
 <script setup lang="ts">
 
 const route = useRoute()
+const userStore = useUserStore()
+
+const authStatus = userStore.isAuthenticated
+
 const pages = [
     { name: 'Home', path: '/'},
     { name: 'Exams', path: '/exam/exam'},
-    {name: 'Register', path: '/sign-up'},
-    {name: 'Login', path: '/login'},
+
 ]
 
-function isActive(path) {
+function isActive(path: string): boolean {
   return route.path === path
 }
+
+const authTabs = computed(()=> {
+    if(userStore.getUser?.role === 'DEPARTMENT'){
+        return {
+            ...pages.concat({name: 'StaffHome', path: '/department/'}, {name: 'uploadExam', path: '/department/upload'}, {name: 'logout', path: '/logout'})
+        }
+    }
+    else if(userStore.getUser?.role === 'STUDENT'){
+        return {
+            ...pages.concat(
+                { name: 'StudentHome', path: '/students/' },
+                { name: 'logout', path: '/logout' }
+            )
+        }
+    }
+    else {
+        return {
+            ...pages.concat({name: 'Register', path: '/sign-up'}, {name: 'Login', path: '/login'},
+)
+
+        }
+    }
+})
 
 </script>
 
@@ -20,7 +46,7 @@ function isActive(path) {
             
             <div class="navar-collapse">
                 <ul class='flex flex-row'>
-                <li v-for='(page, index) in pages' :key="index" class="px-5"> 
+                <li v-for='(page, index) in authTabs' :key="index" class="px-5"> 
                    <NuxtLink  
                    :to="page.path"
                    :class="[

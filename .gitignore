@@ -22,3 +22,7 @@ backend/media/ETDU/
 
 backend/fetenaArchive/fixtures/exams.json
 exam-archive-front/package-lock.json
+exam-archive-front/nuxt.config.ts
+exam-archive-front/nuxt.config.ts
+exam-archive-front/package-lock.json
+exam-archive-front/package.json

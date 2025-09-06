@@ -1,10 +1,10 @@
 # from graphene import relay, ObjectType
 import graphene
 from graphene_django import DjangoObjectType
+from file_api.models import ExamFile
 # from graphene_django.filter import DjangoFilterConnectionField
 
 from .models import *
-from file_api.models import *
 
 class CollegeType(DjangoObjectType):
     class Meta:
@@ -21,7 +21,7 @@ class Exam_courseType(DjangoObjectType):
         model = Exam_courses
         fields = "__all__"
 
-class Site(DjangoObjectType):
+class SiteType(DjangoObjectType):
     class Meta:
         model = Site
         fields = "__all__"
@@ -39,7 +39,7 @@ class PeerReviewType(DjangoObjectType):
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        fields = ('id', 'role', 'username', 'staffID', 'email')
+        fields = ('id', 'role', 'username', 'studentID', 'email', 'staffID')
 
 class ExamFileType(DjangoObjectType):
     class Meta:
