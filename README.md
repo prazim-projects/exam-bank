@@ -15,16 +15,26 @@ A centralized platform for storing, managing, and sharing past exam questions an
 ---
 
 ## Screenshots
+### graphql View
 
-> _Replace the image paths below with your actual screenshots stored in the `/screenshots` folder of your repository._
+![Django Admin Panel View screenshot](screenshots/django-admin.png)
 
-### Dashboard
+### graphql View
 
-![Dashboard Screenshot](screenshots/dashboard.png)
+![Graphql Api View screenshot](screenshots/graphql-api.png)
 
-### Question View
+### Homepage
 
-![Question View Screenshot](screenshots/question-view.png)
+![Dashboard Screenshot](screenshots/home-page.png)
+
+### Auth view from storage/application
+
+![Cookie Auth](screenshots/auth-exam-bank.png)
+
+
+### staff Dashboard
+
+![Authenticated Staff dashboard screenshot](screenshots/staff-dashboard.png)
 
 ---
 
